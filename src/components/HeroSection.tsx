@@ -80,9 +80,9 @@ const HeroSection = () => {
           transition={{ duration: 0.55, delay: 0.1 }}
           className="text-3xl md:text-5xl lg:text-6xl font-extrabold mb-3 leading-tight"
         >
-          Support My Educational
+          An Educational Journey
           <br />
-          <span className="text-white/90">Tour Participation</span>
+          <span className="text-white/90">in Motion</span>
         </motion.h1>
 
         {/* Message */}
