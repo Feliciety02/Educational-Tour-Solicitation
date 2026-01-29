@@ -50,7 +50,7 @@ const HeroSection = () => {
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-4 leading-tight animate-fade-in">
           Help Me Join the
           <br />
-          <span className="text-white/90">Educational Tour 2025</span>
+          <span className="text-white/90">Educational Tour 2026</span>
         </h1>
 
         {/* Personal message */}

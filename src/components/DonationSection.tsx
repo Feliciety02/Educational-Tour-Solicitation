@@ -6,16 +6,32 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Smartphone, Send, Check, Heart, Wallet } from "lucide-react";
+import { Heart, Send, Check, Copy, Smartphone, CreditCard } from "lucide-react";
 
 const quickAmounts = [100, 250, 500, 1000, 2500, 5000];
 
-const steps = [
-  { step: 1, text: "Open your GCash app" },
-  { step: 2, text: "Tap 'Send Money' and enter the number below" },
-  { step: 3, text: "Enter your donation amount and confirm" },
-  { step: 4, text: "Take a screenshot of the confirmation" },
-  { step: 5, text: "Fill out the form below to be added to the leaderboard" },
+// Payment methods with placeholder info
+const paymentMethods = [
+  {
+    id: "gcash",
+    name: "GCash Donation",
+    icon: Smartphone,
+    color: "bg-[#007DFE]",
+    headerColor: "from-[#007DFE] to-[#0066CC]",
+    accountName: "Your Name Here",
+    accountNumber: "09XX XXX XXXX",
+    qrPlaceholder: true,
+  },
+  {
+    id: "maribank",
+    name: "MariBank Donation",
+    icon: CreditCard,
+    color: "bg-[#FF6B35]",
+    headerColor: "from-[#FF6B35] to-[#E55A2B]",
+    accountName: "Your Name Here",
+    accountNumber: "XXXX XXXX XXXX",
+    qrPlaceholder: true,
+  },
 ];
 
 const DonationSection = () => {
@@ -30,6 +46,14 @@ const DonationSection = () => {
 
   const handleQuickAmount = (amount: number) => {
     setFormData((prev) => ({ ...prev, amount: amount.toString() }));
+  };
+
+  const copyToClipboard = (text: string, label: string) => {
+    navigator.clipboard.writeText(text.replace(/\s/g, ""));
+    toast({
+      title: "Copied!",
+      description: `${label} copied to clipboard.`,
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -90,62 +114,93 @@ const DonationSection = () => {
   };
 
   return (
-    <section id="donate" className="py-20 gradient-vibrant">
+    <section id="donate" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         {/* Section header */}
-        <div className="text-center mb-12 text-white">
-          <span className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white/20 text-sm font-medium mb-4">
-            <Heart className="w-4 h-4" />
-            Make a Difference
-          </span>
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 mb-4">
+            <Heart className="w-7 h-7 text-primary" />
+          </div>
+          <span className="block text-primary font-medium mb-4">Support My Journey</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-6">
-            Support Our Journey
+            Your Generosity <span className="text-gradient">Truly Matters</span>
           </h2>
-          <p className="text-white/80 text-lg max-w-2xl mx-auto">
-            Every peso brings us closer to our goal. Your generosity will help 40 students experience this life-changing educational tour.
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Every contribution, no matter how big, brings me closer to this life-changing opportunity. Thank you for believing in my dreams.
           </p>
         </div>
 
-        <div className="max-w-5xl mx-auto grid lg:grid-cols-2 gap-8">
-          {/* GCash Instructions */}
-          <div className="glass-card rounded-3xl p-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-xl bg-[#007DFE] flex items-center justify-center">
-                <Wallet className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold">Donate via GCash</h3>
-                <p className="text-muted-foreground text-sm">Quick and easy mobile payment</p>
-              </div>
-            </div>
-
-            {/* GCash Number */}
-            <div className="bg-muted/50 rounded-2xl p-6 mb-6 text-center">
-              <p className="text-sm text-muted-foreground mb-2">Send to this GCash Number</p>
-              <p className="text-3xl font-bold tracking-wider">0917 123 4567</p>
-              <p className="text-sm text-muted-foreground mt-2">Feanne M.</p>
-            </div>
-
-            {/* Steps */}
-            <div className="space-y-4">
-              <p className="font-semibold">How to Donate:</p>
-              {steps.map((item) => (
-                <div key={item.step} className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 text-sm font-bold text-primary">
-                    {item.step}
-                  </div>
-                  <p className="text-muted-foreground">{item.text}</p>
+        {/* Payment Methods Grid */}
+        <div className="max-w-4xl mx-auto mb-12">
+          <div className="grid md:grid-cols-2 gap-6">
+            {paymentMethods.map((method) => (
+              <div key={method.id} className="bg-card rounded-2xl overflow-hidden border border-border shadow-lg">
+                {/* Header */}
+                <div className={`bg-gradient-to-r ${method.headerColor} px-6 py-4 flex items-center gap-3`}>
+                  <method.icon className="w-5 h-5 text-white" />
+                  <span className="font-semibold text-white">{method.name}</span>
                 </div>
-              ))}
-            </div>
-          </div>
 
-          {/* Donation Form */}
-          <div className="glass-card rounded-3xl p-8">
+                {/* QR Code Area */}
+                <div className="p-6">
+                  <div className="bg-white rounded-xl p-6 mb-6 flex flex-col items-center">
+                    {/* Placeholder QR */}
+                    <div className="w-40 h-40 bg-muted rounded-lg flex items-center justify-center mb-4 border-2 border-dashed border-muted-foreground/30">
+                      <div className="text-center text-muted-foreground">
+                        <div className="grid grid-cols-5 gap-1 mb-2">
+                          {Array.from({ length: 25 }).map((_, i) => (
+                            <div
+                              key={i}
+                              className={`w-2 h-2 rounded-sm ${
+                                Math.random() > 0.5 ? "bg-foreground/20" : "bg-foreground/60"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                        <p className="text-xs">QR Code</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground text-center">
+                      Scan to pay via {method.id === "gcash" ? "GCash" : "MariBank"}
+                    </p>
+                  </div>
+
+                  {/* Account Details */}
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-xs text-muted-foreground mb-1">Account Name</p>
+                      <p className="font-semibold">{method.accountName}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-primary mb-1">Account Number</p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-bold text-lg tracking-wider">{method.accountNumber}</p>
+                        <button
+                          onClick={() => copyToClipboard(method.accountNumber, "Account number")}
+                          className="p-2 hover:bg-muted rounded-lg transition-colors"
+                          title="Copy to clipboard"
+                        >
+                          <Copy className="w-4 h-4 text-muted-foreground hover:text-primary" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Donation Form */}
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-card rounded-3xl p-8 border border-border shadow-xl">
             <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
               <Send className="w-5 h-5 text-primary" />
               Record Your Donation
             </h3>
+            <p className="text-muted-foreground text-sm mb-6">
+              After sending your donation, please fill out this form to be added to the leaderboard.
+            </p>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name */}
@@ -197,7 +252,7 @@ const DonationSection = () => {
                 <Label htmlFor="message">Message (Optional)</Label>
                 <Textarea
                   id="message"
-                  placeholder="Leave an encouraging message for the students..."
+                  placeholder="Leave an encouraging message..."
                   value={formData.message}
                   onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))}
                   className="mt-2"
