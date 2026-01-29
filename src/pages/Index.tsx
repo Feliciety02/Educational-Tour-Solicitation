@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
 import ItinerarySection from "@/components/ItinerarySection";
+import CountdownTimer from "@/components/CountdownTimer";
 import ProgressSection from "@/components/ProgressSection";
 import DonationSection from "@/components/DonationSection";
 import LeaderboardSection from "@/components/LeaderboardSection";
@@ -15,6 +16,7 @@ const Index = () => {
       <HeroSection />
       <AboutSection />
       <ItinerarySection />
+      <CountdownTimer />
       <ProgressSection />
       <DonationSection />
       <LeaderboardSection />
