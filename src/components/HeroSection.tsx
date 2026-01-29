@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import FeanneImg from "@/components/Images/Feanne.svg";
 import { ChevronDown, Sparkles, Heart, MapPin } from "lucide-react";
 
 const HeroSection = () => {
@@ -28,11 +29,12 @@ const HeroSection = () => {
           <div className="relative inline-block">
             <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-white/20 backdrop-blur-sm border-4 border-white/30 overflow-hidden mx-auto shadow-2xl">
               {/* Placeholder - replace src with your actual photo */}
-              <img 
-                src="/placeholder.svg" 
-                alt="Feanne Malasarte"
-                className="w-full h-full object-cover"
-              />
+              <img
+  src={FeanneImg}
+  alt="Feanne Malasarte"
+  className="w-full h-full object-cover"
+/>
+
             </div>
             <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg">
               <Heart className="w-5 h-5 text-primary" />

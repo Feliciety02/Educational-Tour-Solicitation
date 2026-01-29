@@ -60,11 +60,13 @@ const AboutSection = () => {
 
         {/* Student count highlight */}
         <div className="mt-16 text-center p-8 rounded-3xl gradient-vibrant text-white">
-          <p className="text-lg mb-2">We're raising funds for</p>
-          <p className="text-5xl md:text-6xl font-bold mb-2">40 Students</p>
-          <p className="text-white/80">from the BS Computer Science program</p>
-        </div>
-      </div>
+  <p className="text-lg mb-2">This fundraising effort is for</p>
+  <p className="text-5xl md:text-6xl font-bold mb-2">Fe Anne</p>
+  <p className="text-white/80">
+    a BS Computer Science student striving to represent her journey and pursue this educational opportunity
+  </p>
+</div>
+</div>
     </section>
   );
 };
