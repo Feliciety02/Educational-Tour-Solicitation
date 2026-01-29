@@ -72,14 +72,17 @@ const itinerary = [
 
 const ItinerarySection = () => {
   return (
-    <section id="itinerary" className="py-20 bg-muted/30">
+    <section id="itinerary" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         {/* Section header */}
         <div className="text-center mb-12">
-          <span className="inline-block px-4 py-1 rounded-full bg-secondary/10 text-secondary text-sm font-medium mb-4">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-secondary/10 mb-4">
+            <Calendar className="w-7 h-7 text-secondary" />
+          </div>
+          <span className="block text-secondary font-medium mb-4">
             The Journey
           </span>
-          <h2 className="text-3xl md:text-5xl font-bold mb-5">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6">
             4-Day <span className="text-gradient">Itinerary</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">

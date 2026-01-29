@@ -272,20 +272,22 @@ const LeaderboardSection = () => {
   };
 
   return (
-    <section id="leaderboard" className="py-20 bg-muted/30">
+    <section id="leaderboard" className="py-20 bg-background">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-10">
+        <div className="text-center mb-12">
           {/* hidden tap target, looks normal as part of design */}
-          <span
+          <div
             onClick={handleHiddenTap}
-            className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-yellow-500/10 text-yellow-600 text-sm font-medium mb-4 select-none"
+            className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-yellow-500/10 mb-4 cursor-pointer select-none"
             title=""
           >
-            <Trophy className="w-4 h-4" />
+            <Trophy className="w-7 h-7 text-yellow-600" />
+          </div>
+          <span className="block text-yellow-600 font-medium mb-4">
             Hall of Heroes
           </span>
 
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6">
             Top <span className="text-gradient">Donors</span>
           </h2>
 
