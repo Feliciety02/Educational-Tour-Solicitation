@@ -1,9 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Sparkles, GraduationCap, MapPin } from "lucide-react";
+import { ChevronDown, Sparkles, Heart, MapPin } from "lucide-react";
 
 const HeroSection = () => {
   const scrollToDonate = () => {
     document.getElementById("donate")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const scrollToAbout = () => {
+    document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -19,34 +23,53 @@ const HeroSection = () => {
       </div>
 
       <div className="relative z-10 container mx-auto px-4 text-center text-white">
+        {/* Profile Photo Placeholder */}
+        <div className="mb-8 animate-fade-in">
+          <div className="relative inline-block">
+            <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-white/20 backdrop-blur-sm border-4 border-white/30 overflow-hidden mx-auto shadow-2xl">
+              {/* Placeholder - replace src with your actual photo */}
+              <img 
+                src="/placeholder.svg" 
+                alt="Feanne Malasarte"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg">
+              <Heart className="w-5 h-5 text-primary" />
+            </div>
+          </div>
+        </div>
+
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm mb-8 animate-fade-in">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm mb-6 animate-fade-in">
           <Sparkles className="w-4 h-4" />
           <span className="text-sm font-medium">BS Computer Science Educational Tour</span>
         </div>
 
         {/* Main heading */}
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight animate-fade-in">
-          Educational Tour 2025
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-4 leading-tight animate-fade-in">
+          Help Me Join the
           <br />
-          <span className="text-white/90">Explore. Learn. Grow.</span>
+          <span className="text-white/90">Educational Tour 2025</span>
         </h1>
 
-        {/* Subheading */}
-        <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-8 animate-fade-in">
-          Join us on an unforgettable journey through Manila, Cavite, and Laguna. 
-          Help our students gain hands-on learning experiences that will shape their future in technology.
+        {/* Personal message */}
+        <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-4 animate-fade-in">
+          Hi, I'm <span className="font-bold">Feanne</span>! I'm raising funds to join my class's educational tour.
+        </p>
+        <p className="text-base md:text-lg text-white/70 max-w-2xl mx-auto mb-8 animate-fade-in">
+          Your support will help me experience hands-on learning at tech companies, cultural sites, and more across Manila, Cavite, and Laguna.
         </p>
 
         {/* Stats */}
-        <div className="flex flex-wrap justify-center gap-8 mb-12 animate-fade-in">
+        <div className="flex flex-wrap justify-center gap-8 mb-10 animate-fade-in">
           <div className="flex items-center gap-2">
-            <GraduationCap className="w-6 h-6" />
-            <span className="font-semibold">40 Students</span>
+            <MapPin className="w-5 h-5" />
+            <span className="font-semibold">4 Days of Adventure</span>
           </div>
           <div className="flex items-center gap-2">
-            <MapPin className="w-6 h-6" />
-            <span className="font-semibold">3 Destinations</span>
+            <Heart className="w-5 h-5" />
+            <span className="font-semibold">Every Peso Counts</span>
           </div>
         </div>
 
@@ -55,15 +78,16 @@ const HeroSection = () => {
           <Button
             size="lg"
             onClick={scrollToDonate}
-            className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-6 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all"
+            className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-6 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105"
           >
-            Donate Now
+            <Heart className="w-5 h-5 mr-2" />
+            Support My Journey
           </Button>
           <Button
             size="lg"
             variant="outline"
-            onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
-            className="border-white/30 text-white hover:bg-white/10 text-lg px-8 py-6 rounded-full font-semibold"
+            onClick={scrollToAbout}
+            className="border-2 border-white text-white bg-white/10 hover:bg-white/20 text-lg px-8 py-6 rounded-full font-semibold backdrop-blur-sm"
           >
             Learn More
           </Button>
