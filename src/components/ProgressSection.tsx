@@ -59,13 +59,16 @@ const ProgressSection = () => {
   }, [remaining, totalRaised]);
 
   return (
-    <section className="py-20 bg-background">
+    <section id="progress" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <span className="inline-block px-4 py-1 rounded-full bg-accent/10 text-accent text-sm font-medium mb-4">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-accent/10 mb-4">
+            <Target className="w-7 h-7 text-accent" />
+          </div>
+          <span className="block text-accent font-medium mb-4">
             Fundraising Progress
           </span>
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6">
             Tour Fund <span className="text-gradient">Progress</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
