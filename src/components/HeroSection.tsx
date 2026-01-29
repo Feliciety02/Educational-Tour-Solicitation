@@ -13,21 +13,22 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-start justify-center overflow-hidden pt-28 md:pt-36">
       {/* Animated gradient background */}
       <div className="absolute inset-0 gradient-vibrant opacity-90" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20" />
 
       {/* Animated shapes */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          className="absolute top-20 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl"
-          animate={{ scale: [1, 1.08, 1], opacity: [0.45, 0.75, 0.45] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-16 left-8 w-72 h-72 bg-white/10 rounded-full blur-3xl"
+          animate={{ scale: [1, 1.06, 1], opacity: [0.35, 0.6, 0.35] }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
-          className="absolute bottom-20 right-10 w-96 h-96 bg-white/10 rounded-full blur-3xl"
-          animate={{ scale: [1, 1.06, 1], opacity: [0.4, 0.7, 0.4] }}
-          transition={{ duration: 8.5, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+          className="absolute bottom-16 right-10 w-96 h-96 bg-white/10 rounded-full blur-3xl"
+          animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.55, 0.3] }}
+          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
         />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[640px] h-[640px] bg-white/5 rounded-full blur-3xl" />
       </div>
@@ -38,10 +39,10 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55 }}
-          className="mb-8"
+          className="mb-6"
         >
           <div className="relative inline-block">
-            <div className="w-40 h-40 md:w-48 md:h-48 rounded-full bg-white/20 backdrop-blur-sm border-4 border-white/30 overflow-hidden mx-auto shadow-2xl">
+            <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-white/20 backdrop-blur-sm border-4 border-white/25 overflow-hidden mx-auto shadow-2xl">
               <img
                 src={FeanneImg}
                 alt="Feanne Malasarte"
@@ -50,11 +51,11 @@ const HeroSection = () => {
             </div>
 
             <motion.div
-              className="absolute -bottom-2 -right-2 w-11 h-11 rounded-full bg-white flex items-center justify-center shadow-lg"
-              animate={{ scale: [1, 1.08, 1] }}
-              transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-lg"
+              animate={{ scale: [1, 1.07, 1] }}
+              transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
             >
-              <Heart className="w-5 h-5 text-primary" />
+              <Heart className="w-4 h-4 text-primary" />
             </motion.div>
           </div>
         </motion.div>
@@ -64,10 +65,12 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, delay: 0.05 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm mb-6"
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-sm border border-white/15 mb-5"
         >
           <Sparkles className="w-4 h-4" />
-          <span className="text-sm font-medium">BS Computer Science Educational Tour 2026</span>
+          <span className="text-xs md:text-sm font-medium">
+            BS Computer Science Educational Tour 2026
+          </span>
         </motion.div>
 
         {/* Main heading */}
@@ -75,19 +78,19 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, delay: 0.1 }}
-          className="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-4 leading-tight"
+          className="text-3xl md:text-5xl lg:text-6xl font-extrabold mb-3 leading-tight"
         >
           Support My Educational
           <br />
           <span className="text-white/90">Tour Participation</span>
         </motion.h1>
 
-        {/* Message (shorter + more professional) */}
+        {/* Message */}
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, delay: 0.15 }}
-          className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-3"
+          className="text-base md:text-lg text-white/90 max-w-2xl mx-auto mb-2"
         >
           I’m <span className="font-bold">Feanne</span>, raising funds to join our 2026 educational tour.
         </motion.p>
@@ -96,7 +99,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, delay: 0.2 }}
-          className="text-base md:text-lg text-white/70 max-w-2xl mx-auto mb-8"
+          className="text-sm md:text-base text-white/75 max-w-2xl mx-auto mb-7"
         >
           Your support helps cover travel and learning activities across Manila.
         </motion.p>
@@ -106,15 +109,15 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, delay: 0.25 }}
-          className="flex flex-wrap justify-center gap-8 mb-10"
+          className="flex flex-wrap justify-center gap-4 mb-8"
         >
-          <div className="flex items-center gap-2">
-            <MapPin className="w-5 h-5" />
-            <span className="font-semibold">4 Days</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/15 backdrop-blur-sm border border-white/10">
+            <MapPin className="w-4 h-4" />
+            <span className="text-sm font-semibold">4 Days</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Heart className="w-5 h-5" />
-            <span className="font-semibold">Every Contribution Helps</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/15 backdrop-blur-sm border border-white/10">
+            <Heart className="w-4 h-4" />
+            <span className="text-sm font-semibold">Every Contribution Helps</span>
           </div>
         </motion.div>
 
@@ -123,14 +126,14 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, delay: 0.3 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          className="flex flex-col sm:flex-row gap-3 justify-center"
         >
           <Button
             size="lg"
             onClick={scrollToDonate}
-            className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-6 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105"
+            className="bg-white text-primary hover:bg-white/90 text-sm md:text-base px-7 py-5 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
           >
-            <Heart className="w-5 h-5 mr-2" />
+            <Heart className="w-4 h-4 mr-2" />
             Support the Tour
           </Button>
 
@@ -138,7 +141,7 @@ const HeroSection = () => {
             size="lg"
             variant="outline"
             onClick={scrollToAbout}
-            className="border-2 border-white text-white bg-white/10 hover:bg-white/20 text-lg px-8 py-6 rounded-full font-semibold backdrop-blur-sm"
+            className="border-2 border-white/80 text-white bg-white/10 hover:bg-white/20 text-sm md:text-base px-7 py-5 rounded-full font-semibold backdrop-blur-sm"
           >
             Learn More
           </Button>
@@ -146,7 +149,7 @@ const HeroSection = () => {
 
         {/* Scroll indicator */}
         <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          className="absolute bottom-6 left-1/2 -translate-x-1/2"
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
         >
