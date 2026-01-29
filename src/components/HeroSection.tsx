@@ -13,7 +13,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-start justify-center overflow-hidden pt-28 md:pt-36">
+    <section className="relative min-h-[100svh] flex items-start justify-center overflow-hidden pt-28 md:pt-36 pb-20 md:pb-24">
       {/* Animated gradient background */}
       <div className="absolute inset-0 gradient-vibrant opacity-90" />
       <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20" />
@@ -43,11 +43,7 @@ const HeroSection = () => {
         >
           <div className="relative inline-block">
             <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-white/20 backdrop-blur-sm border-4 border-white/25 overflow-hidden mx-auto shadow-2xl">
-              <img
-                src={FeanneImg}
-                alt="Feanne Malasarte"
-                className="w-full h-full object-cover"
-              />
+              <img src={FeanneImg} alt="Feanne Malasarte" className="w-full h-full object-cover" />
             </div>
 
             <motion.div
@@ -68,9 +64,7 @@ const HeroSection = () => {
           className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-sm border border-white/15 mb-5"
         >
           <Sparkles className="w-4 h-4" />
-          <span className="text-xs md:text-sm font-medium">
-            BS Computer Science Educational Tour 2026
-          </span>
+          <span className="text-xs md:text-sm font-medium">BS Computer Science Educational Tour 2026</span>
         </motion.div>
 
         {/* Main heading */}
@@ -126,7 +120,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, delay: 0.3 }}
-          className="flex flex-col sm:flex-row gap-3 justify-center"
+          className="flex flex-col sm:flex-row gap-3 justify-center mb-10 md:mb-12"
         >
           <Button
             size="lg"
@@ -149,9 +143,9 @@ const HeroSection = () => {
 
         {/* Scroll indicator */}
         <motion.div
-          className="absolute bottom-6 left-1/2 -translate-x-1/2"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 pointer-events-none"
           animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
         >
           <ChevronDown className="w-8 h-8 text-white/60" />
         </motion.div>
