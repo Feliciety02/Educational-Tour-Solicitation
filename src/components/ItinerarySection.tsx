@@ -1,38 +1,62 @@
-import { MapPin, Calendar, Building, Landmark, TreePine, Cpu } from "lucide-react";
+import { MapPin, Calendar, Building, Landmark, Coffee, Utensils, Hotel, Plane, Camera, Sparkles, ShoppingBag } from "lucide-react";
 
 const itinerary = [
   {
     day: "Day 1",
-    location: "Manila",
+    date: "March 3, 2026",
+    title: "Arrival and Company Visits",
     color: "from-[hsl(var(--gradient-pink))] to-[hsl(var(--gradient-purple))]",
-    destinations: [
-      { name: "National Museum of Natural History", icon: Building, description: "Explore Philippine biodiversity and natural heritage" },
-      { name: "Intramuros", icon: Landmark, description: "Walk through the historic Walled City" },
-      { name: "Mind Museum", icon: Cpu, description: "Interactive science exhibits and technology displays" },
+    activities: [
+      { name: "Travel from Davao to Manila", icon: Plane, time: "Early Morning" },
+      { name: "Company Visit 1", icon: Building, time: "Morning" },
+      { name: "Lunch", icon: Utensils, time: "12:00 PM" },
+      { name: "Company Visit 2", icon: Building, time: "Afternoon" },
+      { name: "Dinner", icon: Utensils, time: "Evening" },
+      { name: "Hotel Check-in", icon: Hotel, time: "Night" },
     ],
-    objective: "Learn about Philippine history, culture, and scientific innovation",
   },
   {
     day: "Day 2",
-    location: "Cavite",
+    date: "March 4, 2026",
+    title: "Tech Exploration & Cultural Immersion",
     color: "from-[hsl(var(--gradient-purple))] to-[hsl(var(--gradient-blue))]",
-    destinations: [
-      { name: "Aguinaldo Shrine", icon: Landmark, description: "Witness where Philippine independence was declared" },
-      { name: "Historical Sites", icon: Building, description: "Explore revolutionary landmarks" },
-      { name: "Corregidor Island Tour", icon: MapPin, description: "WWII historical site and museum" },
+    activities: [
+      { name: "Breakfast", icon: Coffee, time: "Morning" },
+      { name: "Heritage/Cultural Tour", icon: Landmark, time: "Morning" },
+      { name: "Lunch", icon: Utensils, time: "12:00 PM" },
+      { name: "Company Visit 3", icon: Building, time: "Afternoon" },
+      { name: "Dinner", icon: Utensils, time: "Evening" },
+      { name: "Overnight", icon: Hotel, time: "Night" },
     ],
-    objective: "Understand Philippine revolutionary history and national identity",
   },
   {
     day: "Day 3",
-    location: "Laguna",
+    date: "March 5, 2026",
+    title: "Fun and Learning Day",
     color: "from-[hsl(var(--gradient-blue))] to-[hsl(var(--gradient-teal))]",
-    destinations: [
-      { name: "UPLB Campus Tour", icon: Building, description: "Explore one of the top universities in the country" },
-      { name: "Makiling Botanic Gardens", icon: TreePine, description: "Nature trails and environmental education" },
-      { name: "Local Tech Companies", icon: Cpu, description: "Visit IT companies and learn about the industry" },
+    activities: [
+      { name: "Breakfast", icon: Coffee, time: "Morning" },
+      { name: "Company Visit 4", icon: Building, time: "Morning" },
+      { name: "Lunch", icon: Utensils, time: "12:00 PM" },
+      { name: "Enchanted Kingdom Visit", icon: Sparkles, time: "Afternoon" },
+      { name: "Dinner", icon: Utensils, time: "Evening" },
+      { name: "Overnight", icon: Hotel, time: "Night" },
     ],
-    objective: "Explore academic opportunities and tech industry insights",
+  },
+  {
+    day: "Day 4",
+    date: "March 6, 2026",
+    title: "Departure and Farewell",
+    color: "from-[hsl(var(--gradient-teal))] to-[hsl(var(--gradient-pink))]",
+    activities: [
+      { name: "Breakfast", icon: Coffee, time: "Morning" },
+      { name: "Hotel Check-out", icon: Hotel, time: "Morning" },
+      { name: "Company Visit 5", icon: Building, time: "Late Morning" },
+      { name: "Lunch", icon: Utensils, time: "12:00 PM" },
+      { name: "Free & Easy/Shopping Time", icon: ShoppingBag, time: "Afternoon" },
+      { name: "Dinner", icon: Utensils, time: "Evening" },
+      { name: "Travel back to Davao", icon: Plane, time: "Night" },
+    ],
   },
 ];
 
@@ -46,69 +70,45 @@ const ItinerarySection = () => {
             The Journey
           </span>
           <h2 className="text-3xl md:text-5xl font-bold mb-6">
-            Tour <span className="text-gradient">Itinerary</span>
+            4-Day <span className="text-gradient">Itinerary</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Three days of exploration, learning, and unforgettable experiences across three beautiful provinces.
+            A carefully planned schedule packed with learning opportunities and professional experiences.
           </p>
         </div>
 
-        {/* Timeline */}
-        <div className="relative">
-          {/* Vertical line */}
-          <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-1 gradient-vibrant-vertical rounded-full" />
-
+        {/* Timeline Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {itinerary.map((day, index) => (
             <div
               key={index}
-              className={`relative mb-12 lg:mb-24 ${
-                index % 2 === 0 ? "lg:pr-[50%]" : "lg:pl-[50%] lg:text-right"
-              }`}
+              className="bg-card rounded-3xl p-6 md:p-8 border border-border shadow-lg hover-lift"
             >
-              {/* Timeline dot */}
-              <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-background border-4 border-primary items-center justify-center z-10">
-                <div className="w-2 h-2 rounded-full bg-primary" />
+              {/* Day badge */}
+              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r ${day.color} text-white text-sm font-semibold mb-4`}>
+                <Calendar className="w-4 h-4" />
+                {day.day}
               </div>
 
-              {/* Card */}
-              <div
-                className={`bg-card rounded-3xl p-6 md:p-8 border border-border shadow-lg hover-lift ${
-                  index % 2 === 0 ? "lg:mr-12" : "lg:ml-12"
-                }`}
-              >
-                {/* Day badge */}
-                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r ${day.color} text-white text-sm font-semibold mb-4`}>
-                  <Calendar className="w-4 h-4" />
-                  {day.day}
-                </div>
+              {/* Date & Title */}
+              <div className="mb-6">
+                <p className="text-sm text-muted-foreground mb-1">{day.date}</p>
+                <h3 className="text-xl md:text-2xl font-bold">{day.title}</h3>
+              </div>
 
-                {/* Location */}
-                <div className="flex items-center gap-2 mb-4">
-                  <MapPin className="w-6 h-6 text-primary" />
-                  <h3 className="text-2xl md:text-3xl font-bold">{day.location}</h3>
-                </div>
-
-                {/* Destinations */}
-                <div className={`space-y-4 mb-6 ${index % 2 === 1 ? "lg:text-left" : ""}`}>
-                  {day.destinations.map((dest, destIndex) => (
-                    <div key={destIndex} className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <dest.icon className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="font-semibold">{dest.name}</p>
-                        <p className="text-sm text-muted-foreground">{dest.description}</p>
-                      </div>
+              {/* Activities */}
+              <div className="space-y-3">
+                {day.activities.map((activity, actIndex) => (
+                  <div key={actIndex} className="flex items-center gap-3 p-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <activity.icon className="w-5 h-5 text-primary" />
                     </div>
-                  ))}
-                </div>
-
-                {/* Objective */}
-                <div className={`p-4 rounded-xl bg-muted/50 ${index % 2 === 1 ? "lg:text-left" : ""}`}>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    <span className="text-primary">Educational Objective:</span> {day.objective}
-                  </p>
-                </div>
+                    <div className="flex-grow min-w-0">
+                      <p className="font-medium truncate">{activity.name}</p>
+                      <p className="text-xs text-muted-foreground">{activity.time}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           ))}

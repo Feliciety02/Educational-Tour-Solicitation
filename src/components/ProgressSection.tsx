@@ -3,7 +3,7 @@ import { Progress } from "@/components/ui/progress";
 import { Target, TrendingUp, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
-const GOAL_AMOUNT = 50000;
+const GOAL_AMOUNT = 24800;
 
 const ProgressSection = () => {
   const [totalRaised, setTotalRaised] = useState(0);
