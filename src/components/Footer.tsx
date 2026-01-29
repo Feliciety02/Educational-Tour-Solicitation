@@ -1,91 +1,46 @@
 import { Heart } from "lucide-react";
 
 const Footer = () => {
-  const scrollToSection = (id: string) => {
+  const go = (id: string) =>
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
-    <footer className="bg-foreground text-background py-12">
-      <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-3 gap-8 mb-8">
-          {/* Brand */}
-          <div>
-            <h3 className="text-xl font-bold mb-4">Educational Tour 2025</h3>
-            <p className="text-background/60">
-              Helping BS Computer Science students explore, learn, and grow through experiential education.
-            </p>
-          </div>
+    <footer className="py-12 border-t border-violet-200/20 bg-gradient-to-b from-violet-950 to-violet-900 text-violet-50">
+      <div className="container mx-auto px-4 text-center">
+        {/* identity */}
+        <p className="text-lg font-bold text-white">Feanne Malasarte</p>
+        <p className="text-sm text-violet-200/70 mt-1">
+          BS Computer Science • educational tour fundraiser
+        </p>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2">
-              <li>
-                <button
-                  onClick={() => scrollToSection("about")}
-                  className="text-background/60 hover:text-background transition-colors"
-                >
-                  About the Tour
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("itinerary")}
-                  className="text-background/60 hover:text-background transition-colors"
-                >
-                  Itinerary
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("donate")}
-                  className="text-background/60 hover:text-background transition-colors"
-                >
-                  Donate
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("leaderboard")}
-                  className="text-background/60 hover:text-background transition-colors"
-                >
-                  Leaderboard
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("contact")}
-                  className="text-background/60 hover:text-background transition-colors"
-                >
-                  Contact
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Support */}
-          <div>
-            <h4 className="font-semibold mb-4">Support</h4>
-            <p className="text-background/60 mb-4">
-              Have questions? Reach out to us anytime. We appreciate every donation, big or small!
-            </p>
+        {/* links */}
+        <div className="mt-6 flex flex-wrap justify-center gap-2">
+          {[
+            { id: "about", label: "About" },
+            { id: "itinerary", label: "Plan" },
+            { id: "donate", label: "Donate" },
+            { id: "leaderboard", label: "Donors" },
+            { id: "contact", label: "Contact" },
+          ].map((l) => (
             <button
-              onClick={() => scrollToSection("donate")}
-              className="px-6 py-2 rounded-full bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity"
+              key={l.id}
+              onClick={() => go(l.id)}
+              className="px-3 py-1.5 rounded-full text-sm bg-violet-500/10 text-violet-100 hover:bg-violet-500/20 transition-colors"
             >
-              Donate Now
+              {l.label}
             </button>
-          </div>
+          ))}
         </div>
 
-        {/* Bottom bar */}
-        <div className="pt-8 border-t border-background/10 text-center">
-          <p className="text-background/60 flex items-center justify-center gap-1">
-            Made with <Heart className="w-4 h-4 text-red-500 fill-red-500" /> by BS Computer Science Students
+        {/* bottom */}
+        <div className="mt-8 pt-6 border-t border-violet-200/10">
+          <p className="text-sm text-violet-200/70 flex items-center justify-center gap-1">
+            Made with
+            <Heart className="w-4 h-4 text-violet-300 fill-violet-300" />
+            by Feanne
           </p>
-          <p className="text-background/40 text-sm mt-2">
-            © {new Date().getFullYear()} Educational Tour Fundraiser. All rights reserved.
+          <p className="text-xs text-violet-200/40 mt-2">
+            © {new Date().getFullYear()} Personal Tour Page
           </p>
         </div>
       </div>

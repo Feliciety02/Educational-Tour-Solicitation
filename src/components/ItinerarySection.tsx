@@ -1,3 +1,6 @@
+import { motion } from "framer-motion";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { LucideIcon } from "lucide-react";
 import {
   Calendar,
   Building,
@@ -8,21 +11,46 @@ import {
   Plane,
   Sparkles,
   ShoppingBag,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
-const itinerary = [
+interface Activity {
+  name: string;
+  icon: LucideIcon;
+  time: string;
+  badge: "Travel" | "Company" | "Meal" | "Leisure" | "Stay";
+}
+
+interface DayData {
+  day: string;
+  date: string;
+  title: string;
+  color: string;
+  activities: Activity[];
+}
+
+const badgeColors: Record<Activity["badge"], string> = {
+  Travel: "bg-blue-100 text-blue-700",
+  Company: "bg-teal-light text-primary",
+  Meal: "bg-amber-100 text-amber-700",
+  Leisure: "bg-purple-100 text-purple-700",
+  Stay: "bg-slate-100 text-slate-600",
+};
+
+const itinerary: DayData[] = [
   {
     day: "Day 1",
     date: "March 3, 2026",
     title: "Arrival and Company Visits",
     color: "from-[hsl(var(--gradient-pink))] to-[hsl(var(--gradient-purple))]",
     activities: [
-      { name: "Travel from Davao to Manila", icon: Plane, time: "Early Morning" },
-      { name: "Company Visit 1", icon: Building, time: "Morning" },
-      { name: "Lunch", icon: Utensils, time: "12:00 PM" },
-      { name: "Company Visit 2", icon: Building, time: "Afternoon" },
-      { name: "Dinner", icon: Utensils, time: "Evening" },
-      { name: "Hotel Check-in", icon: Hotel, time: "Night" },
+      { name: "Travel from Davao to Manila", icon: Plane, time: "Early Morning", badge: "Travel" },
+      { name: "Company Visit 1", icon: Building, time: "Morning", badge: "Company" },
+      { name: "Lunch", icon: Utensils, time: "12:00 PM", badge: "Meal" },
+      { name: "Company Visit 2", icon: Building, time: "Afternoon", badge: "Company" },
+      { name: "Dinner", icon: Utensils, time: "Evening", badge: "Meal" },
+      { name: "Hotel Check-in", icon: Hotel, time: "Night", badge: "Stay" },
     ],
   },
   {
@@ -31,12 +59,12 @@ const itinerary = [
     title: "Tech Exploration & Cultural Immersion",
     color: "from-[hsl(var(--gradient-purple))] to-[hsl(var(--gradient-blue))]",
     activities: [
-      { name: "Breakfast", icon: Coffee, time: "Morning" },
-      { name: "Heritage/Cultural Tour", icon: Landmark, time: "Morning" },
-      { name: "Lunch", icon: Utensils, time: "12:00 PM" },
-      { name: "Company Visit 3", icon: Building, time: "Afternoon" },
-      { name: "Dinner", icon: Utensils, time: "Evening" },
-      { name: "Overnight", icon: Hotel, time: "Night" },
+      { name: "Breakfast", icon: Coffee, time: "Morning", badge: "Meal" },
+      { name: "Heritage/Cultural Tour", icon: Landmark, time: "Morning", badge: "Leisure" },
+      { name: "Lunch", icon: Utensils, time: "12:00 PM", badge: "Meal" },
+      { name: "Company Visit 3", icon: Building, time: "Afternoon", badge: "Company" },
+      { name: "Dinner", icon: Utensils, time: "Evening", badge: "Meal" },
+      { name: "Overnight", icon: Hotel, time: "Night", badge: "Stay" },
     ],
   },
   {
@@ -45,12 +73,12 @@ const itinerary = [
     title: "Fun and Learning Day",
     color: "from-[hsl(var(--gradient-blue))] to-[hsl(var(--gradient-teal))]",
     activities: [
-      { name: "Breakfast", icon: Coffee, time: "Morning" },
-      { name: "Company Visit 4", icon: Building, time: "Morning" },
-      { name: "Lunch", icon: Utensils, time: "12:00 PM" },
-      { name: "Enchanted Kingdom Visit", icon: Sparkles, time: "Afternoon" },
-      { name: "Dinner", icon: Utensils, time: "Evening" },
-      { name: "Overnight", icon: Hotel, time: "Night" },
+      { name: "Breakfast", icon: Coffee, time: "Morning", badge: "Meal" },
+      { name: "Company Visit 4", icon: Building, time: "Morning", badge: "Company" },
+      { name: "Lunch", icon: Utensils, time: "12:00 PM", badge: "Meal" },
+      { name: "Enchanted Kingdom Visit", icon: Sparkles, time: "Afternoon", badge: "Leisure" },
+      { name: "Dinner", icon: Utensils, time: "Evening", badge: "Meal" },
+      { name: "Overnight", icon: Hotel, time: "Night", badge: "Stay" },
     ],
   },
   {
@@ -59,137 +87,274 @@ const itinerary = [
     title: "Departure and Farewell",
     color: "from-[hsl(var(--gradient-teal))] to-[hsl(var(--gradient-pink))]",
     activities: [
-      { name: "Breakfast", icon: Coffee, time: "Morning" },
-      { name: "Hotel Check-out", icon: Hotel, time: "Morning" },
-      { name: "Company Visit 5", icon: Building, time: "Late Morning" },
-      { name: "Lunch", icon: Utensils, time: "12:00 PM" },
-      { name: "Free & Easy/Shopping Time", icon: ShoppingBag, time: "Afternoon" },
-      { name: "Dinner", icon: Utensils, time: "Evening" },
-      { name: "Travel back to Davao", icon: Plane, time: "Night" },
+      { name: "Breakfast", icon: Coffee, time: "Morning", badge: "Meal" },
+      { name: "Hotel Check-out", icon: Hotel, time: "Morning", badge: "Stay" },
+      { name: "Company Visit 5", icon: Building, time: "Late Morning", badge: "Company" },
+      { name: "Lunch", icon: Utensils, time: "12:00 PM", badge: "Meal" },
+      { name: "Free & Easy/Shopping Time", icon: ShoppingBag, time: "Afternoon", badge: "Leisure" },
+      { name: "Dinner", icon: Utensils, time: "Evening", badge: "Meal" },
+      { name: "Travel back to Davao", icon: Plane, time: "Night", badge: "Travel" },
     ],
   },
 ];
 
-const ItinerarySection = () => {
+export default function ItinerarySection() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const [activeDay, setActiveDay] = useState(0);
+
+  const setCardRef = (idx: number) => (el: HTMLDivElement | null) => {
+    cardRefs.current[idx] = el;
+  };
+
+  const scrollToIndex = (idx: number) => {
+    const container = scrollRef.current;
+    const card = cardRefs.current[idx];
+    if (!container || !card) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+
+    const currentScrollLeft = container.scrollLeft;
+    const cardLeftInContainer = cardRect.left - containerRect.left + currentScrollLeft;
+
+    const target =
+      cardLeftInContainer - (containerRect.width / 2 - cardRect.width / 2);
+
+    container.scrollTo({ left: target, behavior: "smooth" });
+  };
+
+  const scroll = (direction: "left" | "right") => {
+    const next = direction === "left" ? activeDay - 1 : activeDay + 1;
+    const clamped = Math.max(0, Math.min(itinerary.length - 1, next));
+    scrollToIndex(clamped);
+  };
+
+  const handleScroll = () => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    const containerCenter = container.scrollLeft + container.clientWidth / 2;
+
+    let bestIndex = 0;
+    let bestDistance = Number.POSITIVE_INFINITY;
+
+    for (let i = 0; i < cardRefs.current.length; i += 1) {
+      const card = cardRefs.current[i];
+      if (!card) continue;
+
+      const cardCenter = card.offsetLeft + card.clientWidth / 2;
+      const distance = Math.abs(cardCenter - containerCenter);
+
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        bestIndex = i;
+      }
+    }
+
+    setActiveDay(bestIndex);
+  };
+
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    handleScroll();
+
+    const onResize = () => handleScroll();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  const ariaLabel = useMemo(() => `Go to day ${activeDay + 1}`, [activeDay]);
+
   return (
-    <section id="itinerary" className="py-20 bg-background">
+    <section id="itinerary" className="py-20 bg-muted/30 overflow-hidden">
       <div className="container mx-auto px-4">
-        {/* Section header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-secondary/10 mb-4">
-            <Calendar className="w-7 h-7 text-secondary" />
+        {/* header */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.55 }}
+          className="text-center max-w-3xl mx-auto mb-12"
+        >
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-teal-light mb-4">
+            <Calendar className="w-7 h-7 text-primary" />
           </div>
-          <span className="block text-secondary font-medium mb-4">
+
+          <span className="inline-flex px-4 py-1 rounded-full bg-secondary/10 text-secondary text-sm font-medium mb-4">
             The Journey
           </span>
+
           <h2 className="text-3xl md:text-5xl font-bold mb-6">
             4-Day <span className="text-gradient">Itinerary</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+
+          <p className="text-lg text-muted-foreground">
             A carefully planned schedule packed with learning opportunities and professional experiences.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Horizontal pathway scroller */}
+        {/* timeline */}
         <div className="relative">
-          {/* Path line behind cards */}
-          <div className="pointer-events-none absolute left-0 right-0 top-10 md:top-12">
-            <div className="h-[2px] w-full bg-border/70" />
-            <div className="mt-2 h-[2px] w-full border-t border-dashed border-border/70" />
-          </div>
+          {/* arrows */}
+          <button
+            onClick={() => scroll("left")}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-card shadow-lg border border-border flex items-center justify-center hover:bg-muted transition-colors hidden md:flex"
+            aria-label="Previous day"
+          >
+            <ChevronLeft className="w-6 h-6 text-foreground" />
+          </button>
 
-          {/* Scroll area */}
+          <button
+            onClick={() => scroll("right")}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-card shadow-lg border border-border flex items-center justify-center hover:bg-muted transition-colors hidden md:flex"
+            aria-label="Next day"
+          >
+            <ChevronRight className="w-6 h-6 text-foreground" />
+          </button>
+
+          {/* scroller */}
           <div
+            ref={scrollRef}
+            onScroll={handleScroll}
             className="
-              relative
-              overflow-x-auto
-              pb-6
-              scroll-smooth
+              overflow-x-auto scroll-smooth
+              snap-x snap-mandatory
+              pb-8 md:px-16
               [-ms-overflow-style:none]
               [scrollbar-width:none]
               [&::-webkit-scrollbar]:hidden
             "
+            aria-label={ariaLabel}
           >
-            <div className="min-w-max flex gap-6 md:gap-8 snap-x snap-mandatory">
-              {itinerary.map((day, index) => (
-                <div
-                  key={index}
-                  className="
-                    snap-start
-                    w-[86vw]
-                    sm:w-[520px]
-                    md:w-[560px]
-                    flex-shrink-0
-                  "
-                >
-                  {/* Station marker */}
-                  <div className="relative mb-4 h-14">
-                    <div className="absolute left-6 top-7 -translate-y-1/2">
-                      <div
-                        className={`
-                          w-12 h-12 rounded-2xl
-                          bg-gradient-to-r ${day.color}
-                          shadow-lg
-                          flex items-center justify-center
-                          ring-4 ring-background
-                        `}
-                      >
-                        <Calendar className="w-5 h-5 text-white" />
+            <div className="relative min-w-max">
+              {/* line behind */}
+              <div className="pointer-events-none absolute left-6 right-6 top-10 md:top-12">
+                <div className="h-[3px] w-full bg-gradient-to-r from-[hsl(var(--gradient-pink))] via-[hsl(var(--gradient-blue))] to-[hsl(var(--gradient-teal))] rounded-full opacity-25" />
+                <div className="mt-3 h-px w-full border-t border-dashed border-border/80" />
+              </div>
+
+              {/* cards row */}
+              <div className="relative flex items-start gap-6 px-4 pt-20">
+                {itinerary.map((day, index) => {
+                  const isTop = index % 2 === 0;
+
+                  return (
+                    <div
+                      key={index}
+                      ref={setCardRef(index)}
+                      className="relative flex-shrink-0 w-[86vw] sm:w-[420px] md:w-[440px] snap-center"
+                    >
+                      {/* node */}
+                      <div className="absolute left-1/2 -translate-x-1/2 -top-10 z-20">
+                        <div
+                          className={`
+                            w-14 h-14 rounded-2xl
+                            bg-gradient-to-br ${day.color}
+                            shadow-lg
+                            flex items-center justify-center
+                            ring-4 ring-background
+                          `}
+                        >
+                          <span className="text-white font-bold text-lg">{index + 1}</span>
+                        </div>
+                      </div>
+
+                      {/* stagger */}
+                      <div className={`${isTop ? "mt-0" : "mt-10"} pb-2`}>
+                        <motion.div
+  initial={{ opacity: 0, y: 18 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, margin: "-40px" }}
+  transition={{ duration: 0.45, delay: index * 0.06 }}
+  className="
+    bg-card rounded-3xl border border-border shadow-lg
+    hover:shadow-xl transition-shadow
+    p-5 md:p-6
+  "
+>
+  <div
+    className={`
+      inline-flex items-center gap-2 px-4 py-2 rounded-full
+      bg-gradient-to-r ${day.color}
+      text-white text-sm font-semibold
+      mb-4
+    `}
+  >
+    <Calendar className="w-4 h-4" />
+    {day.day}
+  </div>
+
+  <div className="mb-4">
+    <p className="text-sm text-muted-foreground mb-1">{day.date}</p>
+    <h3 className="text-lg md:text-xl font-bold text-foreground">
+      {day.title}
+    </h3>
+  </div>
+
+  {/* no scroll, card grows to fit */}
+  <div className="space-y-2">
+    {day.activities.map((activity, actIndex) => (
+      <motion.div
+        key={actIndex}
+        initial={{ opacity: 0, x: -8 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: actIndex * 0.03 }}
+        className="flex items-center gap-3 p-2.5 rounded-xl bg-muted/50 hover:bg-muted transition-colors group"
+      >
+        <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
+          <activity.icon className="w-4 h-4 text-primary" />
+        </div>
+
+        <div className="flex-grow min-w-0">
+          <p className="font-medium text-sm truncate text-foreground">
+            {activity.name}
+          </p>
+          <p className="text-xs text-muted-foreground">{activity.time}</p>
+        </div>
+
+        <span
+          className={`text-xs px-2 py-1 rounded-full font-medium flex-shrink-0 ${badgeColors[activity.badge]}`}
+        >
+          {activity.badge}
+        </span>
+      </motion.div>
+    ))}
+  </div>
+</motion.div>
+
                       </div>
                     </div>
-
-                    {/* Connector hint */}
-                    <div className="absolute left-6 top-7 -translate-y-1/2 translate-x-14 text-xs text-muted-foreground">
-                      station {index + 1}
-                    </div>
-                  </div>
-
-                  {/* Card */}
-                  <div className="bg-card rounded-3xl p-6 md:p-8 border border-border shadow-lg hover-lift">
-                    {/* Day badge */}
-                    <div
-                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r ${day.color} text-white text-sm font-semibold mb-4`}
-                    >
-                      {day.day}
-                    </div>
-
-                    {/* Date & Title */}
-                    <div className="mb-6">
-                      <p className="text-sm text-muted-foreground mb-1">{day.date}</p>
-                      <h3 className="text-xl md:text-2xl font-bold">{day.title}</h3>
-                    </div>
-
-                    {/* Activities */}
-                    <div className="space-y-3">
-                      {day.activities.map((activity, actIndex) => (
-                        <div
-                          key={actIndex}
-                          className="flex items-center gap-3 p-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors"
-                        >
-                          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                            <activity.icon className="w-5 h-5 text-primary" />
-                          </div>
-                          <div className="flex-grow min-w-0">
-                            <p className="font-medium truncate">{activity.name}</p>
-                            <p className="text-xs text-muted-foreground">{activity.time}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))}
+                  );
+                })}
+              </div>
             </div>
           </div>
 
-          {/* Little helper text */}
-          <p className="text-center text-sm text-muted-foreground mt-3">
-            swipe sideways to follow the route…
+          {/* dots */}
+          <div className="flex justify-center gap-2 mt-2">
+            {itinerary.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => scrollToIndex(index)}
+                className={`h-2.5 rounded-full transition-all duration-300 ${
+                  activeDay === index
+                    ? "bg-primary w-8"
+                    : "bg-muted-foreground/30 hover:bg-muted-foreground/50 w-2.5"
+                }`}
+                aria-label={`Go to day ${index + 1}`}
+              />
+            ))}
+          </div>
+
+          <p className="text-center text-sm text-muted-foreground mt-4">
+            swipe sideways or use arrows to explore!
           </p>
         </div>
       </div>
     </section>
   );
-};
-
-export default ItinerarySection;
+}
