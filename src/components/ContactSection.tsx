@@ -1,4 +1,14 @@
-import { Mail, Phone, MapPin, Facebook, Instagram, Sparkles } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Facebook,
+  Instagram,
+  Linkedin,
+  Music2,
+  AtSign,
+  Sparkles,
+} from "lucide-react";
 
 const ContactSection = () => {
   return (
@@ -71,29 +81,36 @@ const ContactSection = () => {
                   <div className="w-6 h-6 rounded-full bg-violet-500/15 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <div className="w-2 h-2 rounded-full bg-violet-500" />
                   </div>
-                  <p className="text-muted-foreground">Donations go directly to tour-related expenses and requirements</p>
+                  <p className="text-muted-foreground">
+                    Donations go directly to tour-related expenses and requirements
+                  </p>
                 </li>
 
                 <li className="flex items-start gap-3">
                   <div className="w-6 h-6 rounded-full bg-violet-500/15 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <div className="w-2 h-2 rounded-full bg-violet-500" />
                   </div>
-                  <p className="text-muted-foreground">I’ll post transparent updates on progress and usage</p>
+                  <p className="text-muted-foreground">
+                    I’ll post transparent updates on progress and usage
+                  </p>
                 </li>
 
                 <li className="flex items-start gap-3">
                   <div className="w-6 h-6 rounded-full bg-violet-500/15 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <div className="w-2 h-2 rounded-full bg-violet-500" />
                   </div>
-                  <p className="text-muted-foreground">Post-tour recap with photos and acknowledgments for supporters</p>
+                  <p className="text-muted-foreground">
+                    Post-tour recap with photos and acknowledgments for supporters
+                  </p>
                 </li>
               </ul>
             </div>
 
-            {/* Social links (retain FB/IG colors) */}
+            {/* Social links */}
             <div className="bg-card rounded-3xl p-8 border border-border">
               <h3 className="text-xl font-bold mb-4">Follow My Journey</h3>
-              <div className="flex gap-4">
+
+              <div className="flex flex-wrap gap-4">
                 <a
                   href="https://www.facebook.com/feanneLM"
                   target="_blank"
@@ -112,6 +129,36 @@ const ContactSection = () => {
                   aria-label="Instagram"
                 >
                   <Instagram className="w-6 h-6" />
+                </a>
+
+                <a
+                  href="https://www.linkedin.com/in/fe-anne-malasarte-2a492a322/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-12 h-12 rounded-xl bg-[#0A66C2] flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin className="w-6 h-6" />
+                </a>
+
+                <a
+                  href="https://www.threads.com/@feli_ciety"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-12 h-12 rounded-xl bg-black flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+                  aria-label="Threads"
+                >
+                  <AtSign className="w-6 h-6" />
+                </a>
+
+                <a
+                  href="tiktok.com/@feannemalasarte"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-12 h-12 rounded-xl bg-black flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+                  aria-label="TikTok"
+                >
+                  <Music2 className="w-6 h-6" />
                 </a>
               </div>
 

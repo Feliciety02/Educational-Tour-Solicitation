@@ -1,40 +1,28 @@
 import { useEffect, useMemo, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import { Target, TrendingUp, Users, Wallet } from "lucide-react";
+import type { Donation } from "@/data/donationsSeed";
+import { seedDonations } from "@/data/donationsSeed";
 
 const GOAL_AMOUNT = 24800;
 const STORAGE_KEY = "educ_tour_donations_v1";
-
-type Donation = {
-  id: string;
-  donor_name: string;
-  amount: number;
-  is_anonymous: boolean;
-  created_at: string;
-};
-
-/* keep the same baseline behavior as the leaderboard */
-const seedDonations: Donation[] = [
-  {
-    id: "seed-1",
-    donor_name: "Be the First!",
-    amount: 50,
-    is_anonymous: false,
-    created_at: new Date().toISOString(),
-  },
-];
 
 const loadDonations = (): Donation[] => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return seedDonations;
+
     const parsed = JSON.parse(raw) as Donation[];
-    if (!Array.isArray(parsed)) return seedDonations;
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      return seedDonations;
+    }
+
     return parsed;
   } catch {
     return seedDonations;
   }
 };
+;
 
 const ProgressSection = () => {
   const [donations, setDonations] = useState<Donation[]>([]);
@@ -127,10 +115,7 @@ const ProgressSection = () => {
             {/* progress bar */}
             <div className="mb-8">
               <div className="relative">
-                <Progress
-                  value={percentage}
-                  className="h-6 rounded-full"
-                />
+                <Progress value={percentage} className="h-6 rounded-full" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className="text-sm font-bold text-primary-foreground drop-shadow">
                     {percentage.toFixed(1)}%
@@ -139,7 +124,9 @@ const ProgressSection = () => {
               </div>
 
               <div className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
-                <span>₱{Math.min(totalRaised, GOAL_AMOUNT).toLocaleString()} raised</span>
+                <span>
+                  ₱{Math.min(totalRaised, GOAL_AMOUNT).toLocaleString()} raised
+                </span>
                 <span>₱{remaining.toLocaleString()} remaining</span>
               </div>
             </div>
