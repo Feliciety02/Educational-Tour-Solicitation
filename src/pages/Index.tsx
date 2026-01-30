@@ -15,12 +15,12 @@ const Index = () => {
       <Navbar />
       <HeroSection />
       <ItinerarySection />
-      <CountdownTimer />
       <ProgressSection />
-      <DonationSection />
       <LeaderboardSection />
+       <DonationSection />
       <AboutSection />
       <ContactSection />
+      <CountdownTimer />
       <Footer />
     </div>
   );

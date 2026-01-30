@@ -37,8 +37,15 @@ export const seedDonations: Donation[] = [
     created_at: new Date().toISOString(),
   },
       {
-    id: "manual-3",
+    id: "manual-4",
     donor_name: "Mary Jane Lapaz",
+    amount: 500,
+    is_anonymous: false,
+    created_at: new Date().toISOString(),
+  },
+        {
+    id: "manual-5",
+    donor_name: "Alma Botavara",
     amount: 500,
     is_anonymous: false,
     created_at: new Date().toISOString(),
