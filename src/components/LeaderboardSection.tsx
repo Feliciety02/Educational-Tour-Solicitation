@@ -1,9 +1,13 @@
+"use client";
+
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Trophy, Medal, Award, Gamepad2, Sparkles } from "lucide-react";
 import type { Donation } from "@/data/donationsSeed";
 import { seedDonations } from "@/data/donationsSeed";
 
 const STORAGE_KEY = "educ_tour_donations_v1";
+
+const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
 
 const maskName = (name: string) => {
   if (!name) return "";
@@ -22,7 +26,9 @@ const maskName = (name: string) => {
 
 const loadDonations = (): Donation[] => {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    if (typeof window === "undefined") return seedDonations;
+
+    const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return seedDonations;
 
     const parsed = JSON.parse(raw) as Donation[];
@@ -45,8 +51,6 @@ type Orb = {
   pop?: boolean;
 };
 
-const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
-
 const LeaderboardSection = () => {
   const [donations, setDonations] = useState<Donation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -59,10 +63,11 @@ const LeaderboardSection = () => {
   const rafRef = useRef<number | null>(null);
   const tickRef = useRef<number>(0);
 
-  const reduceMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduceMotion = useMemo(() => {
+    if (typeof window === "undefined") return true;
+    if (!window.matchMedia) return false;
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }, []);
 
   const refresh = () => {
     const data = loadDonations();
@@ -84,7 +89,10 @@ const LeaderboardSection = () => {
   }, [donations]);
 
   const displayDonations = sortedDonations;
-  const shouldScroll = displayDonations.length > 10;
+
+  const winners = useMemo(() => displayDonations.slice(0, 3), [displayDonations]);
+  const others = useMemo(() => displayDonations.slice(3), [displayDonations]);
+  const shouldScroll = others.length > 10;
 
   const getRankIcon = (rank: number) => {
     if (rank === 1) return <Trophy className="w-6 h-6 text-violet-600" />;
@@ -104,7 +112,6 @@ const LeaderboardSection = () => {
     return "bg-white/80 border-border";
   };
 
-  // existing "game" orbs init (inside the card)
   const initOrbs = () => {
     if (!bgRef.current) return;
     const rect = bgRef.current.getBoundingClientRect();
@@ -261,52 +268,49 @@ const LeaderboardSection = () => {
         @keyframes pop { 0% { transform: scale(.85); opacity: 0; } 40% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 0; } }
         @keyframes cardIn { 0% { transform: translateY(8px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
 
-        /* section background orbs (new) */
-@keyframes sectionOrbA {
-  0%   { transform: translate3d(-6%, -4%, 0) scale(1); }
-  50%  { transform: translate3d(8%, 6%, 0) scale(1.12); }
-  100% { transform: translate3d(-6%, -4%, 0) scale(1); }
-}
+        @keyframes sectionOrbA {
+          0%   { transform: translate3d(-6%, -4%, 0) scale(1); }
+          50%  { transform: translate3d(8%, 6%, 0) scale(1.12); }
+          100% { transform: translate3d(-6%, -4%, 0) scale(1); }
+        }
 
-@keyframes sectionOrbB {
-  0%   { transform: translate3d(6%, 3%, 0) scale(1); }
-  50%  { transform: translate3d(-8%, -5%, 0) scale(1.15); }
-  100% { transform: translate3d(6%, 3%, 0) scale(1); }
-}
+        @keyframes sectionOrbB {
+          0%   { transform: translate3d(6%, 3%, 0) scale(1); }
+          50%  { transform: translate3d(-8%, -5%, 0) scale(1.15); }
+          100% { transform: translate3d(6%, 3%, 0) scale(1); }
+        }
 
-@keyframes sectionOrbC {
-  0%   { transform: translate3d(0%, 6%, 0) scale(1); }
-  50%  { transform: translate3d(4%, -8%, 0) scale(1.10); }
-  100% { transform: translate3d(0%, 6%, 0) scale(1); }
-}
-
+        @keyframes sectionOrbC {
+          0%   { transform: translate3d(0%, 6%, 0) scale(1); }
+          50%  { transform: translate3d(4%, -8%, 0) scale(1.10); }
+          100% { transform: translate3d(0%, 6%, 0) scale(1); }
+        }
       `}</style>
 
-      {/* NEW: animated blurred orbs behind the whole section */}
       {!reduceMotion && (
         <div className="pointer-events-none absolute inset-0">
           <div
             className="absolute -top-32 -left-40 h-[520px] w-[520px] rounded-full blur-[120px]"
-  style={{
-    background: "rgba(139,92,246,0.35)",
-    animation: "sectionOrbA 7s ease-in-out infinite",
-  }}
+            style={{
+              background: "rgba(139,92,246,0.35)",
+              animation: "sectionOrbA 7s ease-in-out infinite",
+            }}
           />
           <div
-             className="absolute top-0 right-[-220px] h-[620px] w-[620px] rounded-full blur-[140px]"
-  style={{
-    background: "rgba(217,70,239,0.30)",
-    animation: "sectionOrbB 8s ease-in-out infinite",
-  }}
+            className="absolute top-0 right-[-220px] h-[620px] w-[620px] rounded-full blur-[140px]"
+            style={{
+              background: "rgba(217,70,239,0.30)",
+              animation: "sectionOrbB 8s ease-in-out infinite",
+            }}
           />
           <div
-  className="absolute -bottom-48 left-1/4 h-[640px] w-[640px] rounded-full blur-[160px]"
-  style={{
-    background: "rgba(99,102,241,0.28)",
-    animation: "sectionOrbC 9s ease-in-out infinite",
-  }}
+            className="absolute -bottom-48 left-1/4 h-[640px] w-[640px] rounded-full blur-[160px]"
+            style={{
+              background: "rgba(99,102,241,0.28)",
+              animation: "sectionOrbC 9s ease-in-out infinite",
+            }}
           />
-<div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/65 to-white" />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/65 to-white" />
         </div>
       )}
 
@@ -407,52 +411,100 @@ const LeaderboardSection = () => {
                   <p className="mt-4 text-muted-foreground">Loading leaderboard...</p>
                 </div>
               ) : (
-                <div className={`${shouldScroll ? "max-h-[520px] overflow-y-auto pr-1" : ""} space-y-3`}>
-                  {displayDonations.map((donation, index) => {
-                    const rank = index + 1;
-                    const displayName = donation.is_anonymous ? "Anonymous Donor" : maskName(donation.donor_name);
+                <div className="space-y-6">
+                  {/* Winners */}
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <p className="text-sm font-semibold text-violet-800">All Donors</p>
+                      <p className="text-xs text-muted-foreground">Top 3 donors</p>
+                    </div>
 
-                    return (
-                      <div
-                        key={donation.id}
-                        className={[
-                          "flex items-center gap-4 p-4 rounded-2xl border transition-all",
-                          "hover:shadow-md active:scale-[0.995]",
-                          getRankBg(rank),
-                        ].join(" ")}
-                        style={{
-                          animation: reduceMotion ? undefined : "cardIn 380ms ease-out both",
-                          animationDelay: `${Math.min(index, 10) * 40}ms`,
-                        }}
-                      >
-                        <div
-                          className="flex-shrink-0"
-                          style={{
-                            animation: !reduceMotion && rank <= 3 ? "floaty 2.8s ease-in-out infinite" : undefined,
-                          }}
-                        >
-                          {getRankIcon(rank)}
-                        </div>
+                    <div className="grid gap-3">
+                      {winners.map((donation, index) => {
+                        const rank = index + 1;
+                        const displayName = donation.is_anonymous ? "Anonymous Donor" : maskName(donation.donor_name);
 
-                        <div className="flex-grow min-w-0">
-                          <p className="font-semibold truncate">{displayName}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {new Date(donation.created_at).toLocaleDateString("en-PH", {
-                              month: "short",
-                              day: "numeric",
-                              year: "numeric",
-                            })}
-                          </p>
-                        </div>
+                        return (
+                          <div
+                            key={donation.id}
+                            className={[
+                              "relative flex items-center gap-4 p-5 rounded-2xl border",
+                              "shadow-sm overflow-hidden",
+                              getRankBg(rank),
+                            ].join(" ")}
+                          >
+                            <div
+                              className="flex-shrink-0"
+                              style={{
+                                animation: !reduceMotion && rank <= 3 ? "floaty 2.8s ease-in-out infinite" : undefined,
+                              }}
+                            >
+                              {getRankIcon(rank)}
+                            </div>
 
-                        <div className="flex-shrink-0 text-right">
-                          <p className="text-lg md:text-xl font-bold text-gradient">
-                            ₱{Number(donation.amount).toLocaleString()}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })}
+                            <div className="flex-grow min-w-0">
+                              <p className="font-semibold truncate text-base md:text-lg">{displayName}</p>
+                            </div>
+
+                            <div className="flex-shrink-0 text-right">
+                              <p className="text-xl md:text-2xl font-bold text-gradient">
+                                ₱{Number(donation.amount).toLocaleString()}
+                              </p>
+                            </div>
+
+                            {!reduceMotion && rank === 1 && (
+                              <span
+                                className="pointer-events-none absolute inset-0 rounded-2xl"
+                                style={{
+                                  background:
+                                    "radial-gradient(640px 240px at 20% 18%, rgba(139,92,246,0.18), transparent 55%)",
+                                }}
+                              />
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* All donors */}
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                    </div>
+
+                    <div className={`${shouldScroll ? "max-h-[520px] overflow-y-auto pr-1" : ""} space-y-3`}>
+                      {others.map((donation, index) => {
+                        const rank = index + 4;
+                        const displayName = donation.is_anonymous ? "Anonymous Donor" : maskName(donation.donor_name);
+
+                        return (
+                          <div
+                            key={donation.id}
+                            className={[
+                              "flex items-center gap-4 p-4 rounded-2xl border transition-all",
+                              "bg-white/85 border-border hover:shadow-md active:scale-[0.995]",
+                            ].join(" ")}
+                            style={{
+                              animation: reduceMotion ? undefined : "cardIn 380ms ease-out both",
+                              animationDelay: `${Math.min(index, 10) * 30}ms`,
+                            }}
+                          >
+                            <span className="w-7 text-sm font-semibold text-muted-foreground tabular-nums">{rank}</span>
+
+                            <div className="flex-grow min-w-0">
+                              <p className="font-semibold truncate">{displayName}</p>
+                            </div>
+
+                            <div className="flex-shrink-0 text-right">
+                              <p className="text-lg font-bold text-gradient">
+                                ₱{Number(donation.amount).toLocaleString()}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
