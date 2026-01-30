@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Calendar, Clock } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const FLIGHT_DATE = new Date("2026-03-04T00:00:00");
@@ -13,39 +13,38 @@ interface TimeLeft {
 }
 
 const clamp0 = (n: number) => Math.max(0, n);
-
 const pad2 = (n: number) => n.toString().padStart(2, "0");
 
 function FlipNumber({ value, ariaLabel }: { value: string; ariaLabel: string }) {
   return (
-    <div className="flex items-center justify-center gap-2" aria-label={ariaLabel}>
+    <div className="flex items-center justify-center gap-1.5" aria-label={ariaLabel}>
       {value.split("").map((ch, i) => (
         <div
           key={`${i}-${ch}`}
-          className="relative w-[48px] md:w-[56px] lg:w-[64px] h-[68px] md:h-[80px] lg:h-[92px] rounded-2xl bg-card border border-border shadow-lg overflow-hidden"
+          className="relative
+            w-[36px] sm:w-[40px] md:w-[48px] lg:w-[56px]
+            h-[52px] sm:h-[56px] md:h-[72px] lg:h-[84px]
+            rounded-xl bg-card border border-border shadow-md overflow-hidden"
         >
-          {/* glossy top */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/35 via-transparent to-transparent" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-transparent" />
 
-          {/* flip layer */}
           <AnimatePresence mode="popLayout">
             <motion.div
               key={`${i}-${ch}`}
-              initial={{ rotateX: 85, y: -6, opacity: 0 }}
+              initial={{ rotateX: 85, y: -4, opacity: 0 }}
               animate={{ rotateX: 0, y: 0, opacity: 1 }}
-              exit={{ rotateX: -85, y: 6, opacity: 0 }}
-              transition={{ duration: 0.22, ease: "easeOut" }}
+              exit={{ rotateX: -85, y: 4, opacity: 0 }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
               className="absolute inset-0 flex items-center justify-center"
               style={{ transformStyle: "preserve-3d" }}
             >
-              <span className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gradient leading-none">
+              <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-gradient leading-none">
                 {ch}
               </span>
             </motion.div>
           </AnimatePresence>
 
-          {/* mid seam */}
-          <div className="pointer-events-none absolute left-0 right-0 top-1/2 h-px bg-border/70" />
+          <div className="pointer-events-none absolute left-0 right-0 top-1/2 h-px bg-border/60" />
         </div>
       ))}
     </div>
@@ -97,73 +96,42 @@ export default function CountdownTimerAltAnimation() {
 
   return (
     <section className="relative overflow-hidden py-20 bg-background">
-      {/* background: drifting orbs + shimmer sweep (no icons) */}
-      <div className="pointer-events-none absolute inset-0">
-        <motion.div
-          className="absolute -top-32 -left-28 h-[560px] w-[560px] rounded-full bg-[hsl(var(--gradient-pink))/0.18] blur-3xl"
-          animate={{ x: [0, 22, 0], y: [0, 16, 0] }}
-          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute top-10 right-[-190px] h-[700px] w-[700px] rounded-full bg-[hsl(var(--gradient-purple))/0.16] blur-3xl"
-          animate={{ x: [0, -26, 0], y: [0, 14, 0] }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute -bottom-52 left-1/3 h-[720px] w-[720px] rounded-full bg-[hsl(var(--gradient-teal))/0.14] blur-3xl"
-          animate={{ x: [0, 18, 0], y: [0, -18, 0] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        <motion.div
-          className="absolute -inset-x-40 top-[-30%] h-[220%] rotate-12"
-          initial={{ x: "-35%" }}
-          animate={{ x: "35%" }}
-          transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut" }}
-          style={{
-            background:
-              "linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent)",
-          }}
-        />
-
-        <div className="absolute inset-0 bg-gradient-to-b from-background/35 via-background/70 to-background" />
-      </div>
-
       <div className="relative container mx-auto px-4">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-5xl mx-auto text-center">
           <motion.div
-            initial={{ opacity: 0, y: 18 }}
+            initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="mb-10"
+            transition={{ duration: 0.4 }}
+            className="mb-8"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 text-secondary text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 text-secondary text-sm font-medium mb-5">
               <Calendar className="w-4 h-4" />
               March 4, 2026 (Flight Day)
             </div>
 
-            <h2 className="text-2xl md:text-4xl font-bold mb-4">
+            <h2 className="text-2xl md:text-4xl font-bold mb-3">
               Countdown to the <span className="text-gradient">Flight</span>
             </h2>
 
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground text-sm md:text-base">
               Live ticking countdown with a flip-clock vibe.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
+          {/* tighter horizontal layout */}
+          <div className="flex items-stretch justify-center gap-2 sm:gap-3 md:gap-5">
             {units.map((u, idx) => (
               <motion.div
                 key={u.key}
-                initial={{ opacity: 0, y: 14 }}
+                initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.45, delay: idx * 0.06 }}
-                className="bg-card/70 backdrop-blur-md rounded-3xl p-6 border border-border shadow-lg"
+                transition={{ duration: 0.4, delay: idx * 0.05 }}
+                className="bg-card/70 backdrop-blur-md rounded-2xl p-3 sm:p-4 md:p-6 border border-border shadow-md"
               >
-                <div className="flex flex-col items-center justify-center gap-4">
-                  <div className="text-sm md:text-base uppercase tracking-wider text-muted-foreground font-semibold text-center">
+                <div className="flex flex-col items-center justify-center gap-2 sm:gap-3">
+                  <div className="text-[10px] sm:text-xs md:text-sm uppercase tracking-wider text-muted-foreground font-semibold text-center">
                     {u.label}
                   </div>
 
@@ -172,15 +140,6 @@ export default function CountdownTimerAltAnimation() {
               </motion.div>
             ))}
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.12 }}
-            className="mt-10"
-          >
-          </motion.div>
         </div>
       </div>
     </section>

@@ -118,9 +118,7 @@ export default function ItinerarySection() {
     const currentScrollLeft = container.scrollLeft;
     const cardLeftInContainer = cardRect.left - containerRect.left + currentScrollLeft;
 
-    const target =
-      cardLeftInContainer - (containerRect.width / 2 - cardRect.width / 2);
-
+    const target = cardLeftInContainer - (containerRect.width / 2 - cardRect.width / 2);
     container.scrollTo({ left: target, behavior: "smooth" });
   };
 
@@ -169,39 +167,36 @@ export default function ItinerarySection() {
   const ariaLabel = useMemo(() => `Go to day ${activeDay + 1}`, [activeDay]);
 
   return (
-    <section id="itinerary" className="py-20 bg-muted/30 overflow-hidden">
+    <section id="itinerary" className="py-16 sm:py-20 bg-muted/30 overflow-hidden">
       <div className="container mx-auto px-4">
-        {/* header */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.55 }}
-          className="text-center max-w-3xl mx-auto mb-12"
+          className="text-center max-w-3xl mx-auto mb-10 sm:mb-12"
         >
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-teal-light mb-4">
-            <Calendar className="w-7 h-7 text-primary" />
+          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-teal-light mb-4">
+            <Calendar className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
           </div>
 
           <span className="inline-flex px-4 py-1 rounded-full bg-secondary/10 text-secondary text-sm font-medium mb-4">
             The Journey
           </span>
 
-          <h2 className="text-3xl md:text-5xl font-bold mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-6">
             4-Day <span className="text-gradient">Itinerary</span>
           </h2>
 
-          <p className="text-lg text-muted-foreground">
+          <p className="text-base sm:text-lg text-muted-foreground">
             A carefully planned schedule packed with learning opportunities and professional experiences.
           </p>
         </motion.div>
 
-        {/* timeline */}
         <div className="relative">
-          {/* arrows */}
           <button
             onClick={() => scroll("left")}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-card shadow-lg border border-border flex items-center justify-center hover:bg-muted transition-colors hidden md:flex"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-card shadow-lg border border-border items-center justify-center hover:bg-muted transition-colors hidden md:flex"
             aria-label="Previous day"
           >
             <ChevronLeft className="w-6 h-6 text-foreground" />
@@ -209,20 +204,20 @@ export default function ItinerarySection() {
 
           <button
             onClick={() => scroll("right")}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-card shadow-lg border border-border flex items-center justify-center hover:bg-muted transition-colors hidden md:flex"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-card shadow-lg border border-border items-center justify-center hover:bg-muted transition-colors hidden md:flex"
             aria-label="Next day"
           >
             <ChevronRight className="w-6 h-6 text-foreground" />
           </button>
 
-          {/* scroller */}
           <div
             ref={scrollRef}
             onScroll={handleScroll}
             className="
-              overflow-x-auto scroll-smooth
-              snap-x snap-mandatory
-              pb-8 md:px-16
+              overflow-x-auto scroll-smooth snap-x snap-mandatory
+              pb-6 sm:pb-8
+              md:px-16
+              px-2
               [-ms-overflow-style:none]
               [scrollbar-width:none]
               [&::-webkit-scrollbar]:hidden
@@ -230,111 +225,95 @@ export default function ItinerarySection() {
             aria-label={ariaLabel}
           >
             <div className="relative min-w-max">
-              {/* line behind */}
-              <div className="pointer-events-none absolute left-6 right-6 top-10 md:top-12">
+              <div className="pointer-events-none absolute left-4 right-4 sm:left-6 sm:right-6 top-10 sm:top-12">
                 <div className="h-[3px] w-full bg-gradient-to-r from-[hsl(var(--gradient-pink))] via-[hsl(var(--gradient-blue))] to-[hsl(var(--gradient-teal))] rounded-full opacity-25" />
                 <div className="mt-3 h-px w-full border-t border-dashed border-border/80" />
               </div>
 
-              {/* cards row */}
-              <div className="relative flex items-start gap-6 px-4 pt-20">
-                {itinerary.map((day, index) => {
-                  const isTop = index % 2 === 0;
-
-                  return (
-                    <div
-                      key={index}
-                      ref={setCardRef(index)}
-                      className="relative flex-shrink-0 w-[86vw] sm:w-[420px] md:w-[440px] snap-center"
-                    >
-                      {/* node */}
-                      <div className="absolute left-1/2 -translate-x-1/2 -top-10 z-20">
-                        <div
-                          className={`
-                            w-14 h-14 rounded-2xl
-                            bg-gradient-to-br ${day.color}
-                            shadow-lg
-                            flex items-center justify-center
-                            ring-4 ring-background
-                          `}
-                        >
-                          <span className="text-white font-bold text-lg">{index + 1}</span>
-                        </div>
-                      </div>
-
-                      {/* stagger */}
-                      <div className={`${isTop ? "mt-0" : "mt-10"} pb-2`}>
-                        <motion.div
-  initial={{ opacity: 0, y: 18 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true, margin: "-40px" }}
-  transition={{ duration: 0.45, delay: index * 0.06 }}
-  className="
-    bg-card rounded-3xl border border-border shadow-lg
-    hover:shadow-xl transition-shadow
-    p-5 md:p-6
-  "
->
-  <div
-    className={`
-      inline-flex items-center gap-2 px-4 py-2 rounded-full
-      bg-gradient-to-r ${day.color}
-      text-white text-sm font-semibold
-      mb-4
-    `}
-  >
-    <Calendar className="w-4 h-4" />
-    {day.day}
-  </div>
-
-  <div className="mb-4">
-    <p className="text-sm text-muted-foreground mb-1">{day.date}</p>
-    <h3 className="text-lg md:text-xl font-bold text-foreground">
-      {day.title}
-    </h3>
-  </div>
-
-  {/* no scroll, card grows to fit */}
-  <div className="space-y-2">
-    {day.activities.map((activity, actIndex) => (
-      <motion.div
-        key={actIndex}
-        initial={{ opacity: 0, x: -8 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: actIndex * 0.03 }}
-        className="flex items-center gap-3 p-2.5 rounded-xl bg-muted/50 hover:bg-muted transition-colors group"
-      >
-        <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
-          <activity.icon className="w-4 h-4 text-primary" />
-        </div>
-
-        <div className="flex-grow min-w-0">
-          <p className="font-medium text-sm truncate text-foreground">
-            {activity.name}
-          </p>
-          <p className="text-xs text-muted-foreground">{activity.time}</p>
-        </div>
-
-        <span
-          className={`text-xs px-2 py-1 rounded-full font-medium flex-shrink-0 ${badgeColors[activity.badge]}`}
-        >
-          {activity.badge}
-        </span>
-      </motion.div>
-    ))}
-  </div>
-</motion.div>
-
+              <div className="relative flex items-start gap-4 sm:gap-6 px-3 sm:px-4 pt-16 sm:pt-20">
+                {itinerary.map((day, index) => (
+                  <div
+                    key={index}
+                    ref={setCardRef(index)}
+                    className="relative flex-shrink-0 w-[92vw] max-w-[420px] sm:w-[420px] md:w-[440px] snap-center"
+                  >
+                    <div className="absolute left-1/2 -translate-x-1/2 -top-8 sm:-top-10 z-20">
+                      <div
+                        className={`
+                          w-12 h-12 sm:w-14 sm:h-14 rounded-2xl
+                          bg-gradient-to-br ${day.color}
+                          shadow-lg flex items-center justify-center
+                          ring-4 ring-background
+                        `}
+                      >
+                        <span className="text-white font-bold text-base sm:text-lg">{index + 1}</span>
                       </div>
                     </div>
-                  );
-                })}
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 14 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-40px" }}
+                      transition={{ duration: 0.45, delay: index * 0.06 }}
+                      className="
+                        bg-card rounded-3xl border border-border shadow-lg
+                        hover:shadow-xl transition-shadow
+                        p-4 sm:p-5 md:p-6
+                      "
+                    >
+                      <div
+                        className={`
+                          inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full
+                          bg-gradient-to-r ${day.color}
+                          text-white text-xs sm:text-sm font-semibold
+                          mb-4
+                        `}
+                      >
+                        <Calendar className="w-4 h-4" />
+                        {day.day}
+                      </div>
+
+                      <div className="mb-4">
+                        <p className="text-xs sm:text-sm text-muted-foreground mb-1">{day.date}</p>
+                        <h3 className="text-base sm:text-lg md:text-xl font-bold text-foreground">
+                          {day.title}
+                        </h3>
+                      </div>
+
+                      <div className="space-y-2">
+                        {day.activities.map((activity, actIndex) => (
+                          <motion.div
+                            key={actIndex}
+                            initial={{ opacity: 0, x: -6 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: actIndex * 0.03 }}
+                            className="flex items-center gap-3 p-2.5 rounded-xl bg-muted/50 hover:bg-muted transition-colors group"
+                          >
+                            <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
+                              <activity.icon className="w-4 h-4 text-primary" />
+                            </div>
+
+                            <div className="flex-grow min-w-0">
+                              <p className="font-medium text-sm truncate text-foreground">{activity.name}</p>
+                              <p className="text-xs text-muted-foreground">{activity.time}</p>
+                            </div>
+
+                            <span
+                              className={`text-[11px] px-2 py-1 rounded-full font-medium flex-shrink-0 ${badgeColors[activity.badge]}`}
+                            >
+                              {activity.badge}
+                            </span>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* dots */}
           <div className="flex justify-center gap-2 mt-2">
             {itinerary.map((_, index) => (
               <button
@@ -350,8 +329,8 @@ export default function ItinerarySection() {
             ))}
           </div>
 
-          <p className="text-center text-sm text-muted-foreground mt-4">
-            swipe sideways or use arrows to explore!
+          <p className="text-center text-xs sm:text-sm text-muted-foreground mt-4">
+            swipe sideways to explore each day
           </p>
         </div>
       </div>

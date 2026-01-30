@@ -92,14 +92,15 @@ const LeaderboardSection = () => {
 
   const winners = useMemo(() => displayDonations.slice(0, 3), [displayDonations]);
   const others = useMemo(() => displayDonations.slice(3), [displayDonations]);
+
   const shouldScroll = others.length > 10;
 
   const getRankIcon = (rank: number) => {
-    if (rank === 1) return <Trophy className="w-6 h-6 text-violet-600" />;
-    if (rank === 2) return <Medal className="w-6 h-6 text-fuchsia-600" />;
-    if (rank === 3) return <Award className="w-6 h-6 text-indigo-600" />;
+    if (rank === 1) return <Trophy className="w-5 h-5 sm:w-6 sm:h-6 text-violet-600" />;
+    if (rank === 2) return <Medal className="w-5 h-5 sm:w-6 sm:h-6 text-fuchsia-600" />;
+    if (rank === 3) return <Award className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600" />;
     return (
-      <span className="w-6 h-6 flex items-center justify-center text-muted-foreground font-bold">
+      <span className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-muted-foreground font-bold text-sm">
         {rank}
       </span>
     );
@@ -117,10 +118,10 @@ const LeaderboardSection = () => {
     const rect = bgRef.current.getBoundingClientRect();
     const w = Math.max(320, rect.width);
     const h = Math.max(420, rect.height);
-    const count = w < 420 ? 10 : 14;
+    const count = w < 420 ? 9 : 14;
 
     const next: Orb[] = Array.from({ length: count }).map((_, i) => {
-      const r = 10 + Math.random() * (w < 420 ? 12 : 16);
+      const r = 9 + Math.random() * (w < 420 ? 10 : 16);
       return {
         id: `orb-${i}-${Math.random().toString(16).slice(2)}`,
         x: Math.random() * (w - r * 2) + r,
@@ -210,7 +211,7 @@ const LeaderboardSection = () => {
     const x = clientX - rect.left;
     const y = clientY - rect.top;
 
-    const hitRadius = rect.width < 420 ? 28 : 34;
+    const hitRadius = rect.width < 420 ? 26 : 34;
     let hit = false;
 
     setOrbs((prev) => {
@@ -232,7 +233,7 @@ const LeaderboardSection = () => {
     } else {
       setCombo(0);
       setOrbs((prev) => {
-        const r = 9 + Math.random() * 10;
+        const r = 8 + Math.random() * 9;
         const newOrb: Orb = {
           id: `tap-${Math.random().toString(16).slice(2)}`,
           x,
@@ -243,7 +244,7 @@ const LeaderboardSection = () => {
           hue: 255 + Math.random() * 55,
           pop: true,
         };
-        return [...prev, newOrb].slice(-24);
+        return [...prev, newOrb].slice(-22);
       });
     }
   };
@@ -261,63 +262,40 @@ const LeaderboardSection = () => {
   }, []);
 
   return (
-    <section id="leaderboard" className="relative overflow-hidden py-20 md:py-24 bg-white border-t border-border">
+    <section id="leaderboard" className="relative overflow-hidden py-16 sm:py-20 md:py-24 bg-white border-t border-border">
       <style>{`
         @keyframes floaty { 0% { transform: translateY(0px); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0px); } }
         @keyframes shimmer { 0% { transform: translateX(-40%); opacity: 0; } 30% { opacity: .9; } 100% { transform: translateX(140%); opacity: 0; } }
         @keyframes pop { 0% { transform: scale(.85); opacity: 0; } 40% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 0; } }
         @keyframes cardIn { 0% { transform: translateY(8px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
 
-        @keyframes sectionOrbA {
-          0%   { transform: translate3d(-6%, -4%, 0) scale(1); }
-          50%  { transform: translate3d(8%, 6%, 0) scale(1.12); }
-          100% { transform: translate3d(-6%, -4%, 0) scale(1); }
-        }
-
-        @keyframes sectionOrbB {
-          0%   { transform: translate3d(6%, 3%, 0) scale(1); }
-          50%  { transform: translate3d(-8%, -5%, 0) scale(1.15); }
-          100% { transform: translate3d(6%, 3%, 0) scale(1); }
-        }
-
-        @keyframes sectionOrbC {
-          0%   { transform: translate3d(0%, 6%, 0) scale(1); }
-          50%  { transform: translate3d(4%, -8%, 0) scale(1.10); }
-          100% { transform: translate3d(0%, 6%, 0) scale(1); }
-        }
+        @keyframes sectionOrbA { 0% { transform: translate3d(-6%, -4%, 0) scale(1); } 50% { transform: translate3d(8%, 6%, 0) scale(1.12); } 100% { transform: translate3d(-6%, -4%, 0) scale(1); } }
+        @keyframes sectionOrbB { 0% { transform: translate3d(6%, 3%, 0) scale(1); } 50% { transform: translate3d(-8%, -5%, 0) scale(1.15); } 100% { transform: translate3d(6%, 3%, 0) scale(1); } }
+        @keyframes sectionOrbC { 0% { transform: translate3d(0%, 6%, 0) scale(1); } 50% { transform: translate3d(4%, -8%, 0) scale(1.10); } 100% { transform: translate3d(0%, 6%, 0) scale(1); } }
       `}</style>
 
       {!reduceMotion && (
         <div className="pointer-events-none absolute inset-0">
           <div
             className="absolute -top-32 -left-40 h-[520px] w-[520px] rounded-full blur-[120px]"
-            style={{
-              background: "rgba(139,92,246,0.35)",
-              animation: "sectionOrbA 7s ease-in-out infinite",
-            }}
+            style={{ background: "rgba(139,92,246,0.35)", animation: "sectionOrbA 7s ease-in-out infinite" }}
           />
           <div
             className="absolute top-0 right-[-220px] h-[620px] w-[620px] rounded-full blur-[140px]"
-            style={{
-              background: "rgba(217,70,239,0.30)",
-              animation: "sectionOrbB 8s ease-in-out infinite",
-            }}
+            style={{ background: "rgba(217,70,239,0.30)", animation: "sectionOrbB 8s ease-in-out infinite" }}
           />
           <div
             className="absolute -bottom-48 left-1/4 h-[640px] w-[640px] rounded-full blur-[160px]"
-            style={{
-              background: "rgba(99,102,241,0.28)",
-              animation: "sectionOrbC 9s ease-in-out infinite",
-            }}
+            style={{ background: "rgba(99,102,241,0.28)", animation: "sectionOrbC 9s ease-in-out infinite" }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/65 to-white" />
         </div>
       )}
 
       <div className="relative z-10 container mx-auto px-4">
-        <div className="text-center mb-10 md:mb-12">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-violet-500/10 mb-4 select-none relative overflow-hidden">
-            <Trophy className="w-7 h-7 text-violet-600" />
+        <div className="text-center mb-8 sm:mb-10 md:mb-12">
+          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-violet-500/10 mb-4 select-none relative overflow-hidden">
+            <Trophy className="w-6 h-6 sm:w-7 sm:h-7 text-violet-600" />
             {!reduceMotion && (
               <span
                 className="absolute inset-0"
@@ -332,20 +310,20 @@ const LeaderboardSection = () => {
 
           <span className="block text-violet-700 font-medium mb-3">Hall of Heroes</span>
 
-          <h2 className="text-3xl md:text-5xl font-bold mb-5">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-5">
             Top <span className="text-gradient">Donors</span>
           </h2>
 
-          <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-2xl mx-auto">
             A heartfelt thank you to all our generous donors. Your support makes this educational journey possible.
           </p>
 
           {!reduceMotion && (
-            <div className="mt-5 flex items-center justify-center gap-2 text-xs text-muted-foreground">
+            <div className="mt-4 sm:mt-5 flex flex-wrap items-center justify-center gap-2 text-[11px] sm:text-xs text-muted-foreground">
               <Gamepad2 className="w-4 h-4" />
               Tap the background to collect sparkles
               {combo > 0 && (
-                <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-violet-500/10 px-2 py-1 text-violet-800">
+                <span className="inline-flex items-center gap-1 rounded-full bg-violet-500/10 px-2 py-1 text-violet-800">
                   <Sparkles className="w-3.5 h-3.5" /> combo x{combo}
                 </span>
               )}
@@ -356,7 +334,7 @@ const LeaderboardSection = () => {
         <div
           ref={bgRef}
           onPointerDown={onPointerDownBg}
-          className="relative max-w-2xl mx-auto rounded-[28px] border border-border shadow-lg overflow-hidden"
+          className="relative max-w-2xl mx-auto rounded-[24px] sm:rounded-[28px] border border-border shadow-lg overflow-hidden"
           style={bgStyle}
         >
           {!reduceMotion && (
@@ -403,7 +381,7 @@ const LeaderboardSection = () => {
             </div>
           )}
 
-          <div className="relative p-4 md:p-6">
+          <div className="relative p-4 sm:p-5 md:p-6">
             <div className="max-w-2xl mx-auto">
               {isLoading ? (
                 <div className="text-center py-10">
@@ -411,12 +389,12 @@ const LeaderboardSection = () => {
                   <p className="mt-4 text-muted-foreground">Loading leaderboard...</p>
                 </div>
               ) : (
-                <div className="space-y-6">
+                <div className="space-y-5 sm:space-y-6">
                   {/* Winners */}
                   <div>
                     <div className="flex items-center justify-between mb-3">
-                      <p className="text-sm font-semibold text-violet-800">All Donors</p>
-                      <p className="text-xs text-muted-foreground">Top 3 donors</p>
+                      <p className="text-sm font-semibold text-violet-800">Top 3 donors</p>
+                      <p className="text-xs text-muted-foreground">{displayDonations.length} total</p>
                     </div>
 
                     <div className="grid gap-3">
@@ -428,7 +406,7 @@ const LeaderboardSection = () => {
                           <div
                             key={donation.id}
                             className={[
-                              "relative flex items-center gap-4 p-5 rounded-2xl border",
+                              "relative flex items-center gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl border",
                               "shadow-sm overflow-hidden",
                               getRankBg(rank),
                             ].join(" ")}
@@ -443,11 +421,11 @@ const LeaderboardSection = () => {
                             </div>
 
                             <div className="flex-grow min-w-0">
-                              <p className="font-semibold truncate text-base md:text-lg">{displayName}</p>
+                              <p className="font-semibold truncate text-sm sm:text-base md:text-lg">{displayName}</p>
                             </div>
 
                             <div className="flex-shrink-0 text-right">
-                              <p className="text-xl md:text-2xl font-bold text-gradient">
+                              <p className="text-lg sm:text-xl md:text-2xl font-bold text-gradient tabular-nums">
                                 ₱{Number(donation.amount).toLocaleString()}
                               </p>
                             </div>
@@ -469,9 +447,6 @@ const LeaderboardSection = () => {
 
                   {/* All donors */}
                   <div>
-                    <div className="flex items-center justify-between mb-3">
-                    </div>
-
                     <div className={`${shouldScroll ? "max-h-[520px] overflow-y-auto pr-1" : ""} space-y-3`}>
                       {others.map((donation, index) => {
                         const rank = index + 4;
@@ -481,7 +456,7 @@ const LeaderboardSection = () => {
                           <div
                             key={donation.id}
                             className={[
-                              "flex items-center gap-4 p-4 rounded-2xl border transition-all",
+                              "flex items-center gap-3 sm:gap-4 p-3.5 sm:p-4 rounded-2xl border transition-all",
                               "bg-white/85 border-border hover:shadow-md active:scale-[0.995]",
                             ].join(" ")}
                             style={{
@@ -489,14 +464,16 @@ const LeaderboardSection = () => {
                               animationDelay: `${Math.min(index, 10) * 30}ms`,
                             }}
                           >
-                            <span className="w-7 text-sm font-semibold text-muted-foreground tabular-nums">{rank}</span>
+                            <span className="w-7 text-xs sm:text-sm font-semibold text-muted-foreground tabular-nums">
+                              {rank}
+                            </span>
 
                             <div className="flex-grow min-w-0">
-                              <p className="font-semibold truncate">{displayName}</p>
+                              <p className="font-semibold truncate text-sm sm:text-base">{displayName}</p>
                             </div>
 
                             <div className="flex-shrink-0 text-right">
-                              <p className="text-lg font-bold text-gradient">
+                              <p className="text-base sm:text-lg font-bold text-gradient tabular-nums">
                                 ₱{Number(donation.amount).toLocaleString()}
                               </p>
                             </div>
@@ -510,7 +487,7 @@ const LeaderboardSection = () => {
             </div>
 
             {!reduceMotion && (
-              <div className="mt-5 text-center text-xs text-muted-foreground">
+              <div className="mt-5 text-center text-[11px] sm:text-xs text-muted-foreground px-2">
                 little secret game: tap near a floating glow to collect it... miss and it resets
               </div>
             )}
