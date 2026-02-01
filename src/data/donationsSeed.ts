@@ -50,4 +50,11 @@ export const seedDonations: Donation[] = [
     is_anonymous: false,
     created_at: new Date().toISOString(),
   },
+        {
+    id: "manual-3",
+    donor_name: "Gladys B. Malilay",
+    amount: 500,
+    is_anonymous: false,
+    created_at: new Date().toISOString(),
+  },
 ];
