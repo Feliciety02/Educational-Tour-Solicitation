@@ -52,7 +52,14 @@ export const seedDonations: Donation[] = [
   },
         {
     id: "manual-3",
-    donor_name: "Gladys B. Malilay",
+    donor_name: "Gladys Malilay",
+    amount: 500,
+    is_anonymous: false,
+    created_at: new Date().toISOString(),
+  },
+          {
+    id: "manual-3",
+    donor_name: "Edwin Filosopo",
     amount: 500,
     is_anonymous: false,
     created_at: new Date().toISOString(),
