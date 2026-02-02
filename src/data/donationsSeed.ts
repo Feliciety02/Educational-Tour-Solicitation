@@ -75,8 +75,8 @@ export const seedDonations: Donation[] = [
               {
     id: "manual-3",
     donor_name: "Cashin form Coins.ph",
-    amount: 500,
-    is_anonymous: true,
+    amount: 5209,
+    is_anonymous: false,
     created_at: new Date().toISOString(),
   },
   
