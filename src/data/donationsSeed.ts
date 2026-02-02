@@ -10,7 +10,7 @@ export type Donation = {
 export const seedDonations: Donation[] = [
   {
     id: "manual-1",
-    donor_name: "Kimberly Malasarte",
+    donor_name: "Kimberly Ocariza",
     amount: 2700,
     is_anonymous: false,
     created_at: new Date().toISOString(),
@@ -64,4 +64,22 @@ export const seedDonations: Donation[] = [
     is_anonymous: false,
     created_at: new Date().toISOString(),
   },
+            {
+    id: "manual-3",
+    donor_name: "Klint Malaasarte",
+    amount: 2000,
+    is_anonymous: false,
+    created_at: new Date().toISOString(),
+  },
+
+              {
+    id: "manual-3",
+    donor_name: "Cashin form Coins.ph",
+    amount: 500,
+    is_anonymous: true,
+    created_at: new Date().toISOString(),
+  },
+  
+
+
 ];
